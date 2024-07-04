@@ -1,0 +1,110 @@
+:root {
+  --black: #3d3b40;
+  --indigo: #525ceb;
+  --pale-indigo: #bfcfe7;
+  --pale-lavender: #f8edff;
+  --white: #ffffff;
+  --yellow: #ffc947;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1,
+h2 {
+  font-family: "Broadsheet LDO", sans-serif;
+  font-weight: bold;
+}
+
+h3 {
+  font-family: "Sweet Sans Pro", sans-serif;
+}
+
+p {
+  font-family: "Sweet Sans Pro", sans-serif;
+}
+
+.hero {
+  background-color: var(--black);
+  color: var(--white);
+}
+
+.title-container {
+  height: 550px;
+}
+
+.title {
+  color: var(--pale-lavender);
+  font-size: 7em;
+}
+
+.movie-list {
+  background-color: var(--indigo);
+}
+
+.sort-container-title {
+  color: var(--white);
+}
+
+.movie-card {
+  width: 85%;
+  background-color: var(--black);
+  color: var(--white);
+}
+
+.poster-img {
+  object-fit: cover;
+}
+
+.movie-content-title {
+  color: var(--pale-lavender);
+}
+
+.movie-content-imdb p {
+  font-family: "Anton", sans-serif;
+  color: var(--black);
+}
+
+.movie-content-imdb p:nth-child(1) {
+  background-color: var(--yellow);
+}
+
+.movie-content-imdb p:nth-child(2) {
+  background-color: var(--white);
+  color: var(--black);
+}
+
+.movie-content-genre {
+  background-color: var(--indigo) !important;
+  color: var(--white) !important;
+}
+
+.plot-title-text {
+  font-size: 1.4em;
+  font-weight: bold;
+}
+
+.movie-content-actors {
+  color: var(--indigo);
+}
+
+.movie-content-notes-text {
+  font-family: "Broadsheet LDO", sans-serif;
+}
+
+.movie-content-footer {
+  background-color: var(--white);
+  color: var(--black);
+}
+
+.footer-title-text {
+  font-weight: bold;
+}
+
+.star {
+  color: var(--yellow);
+}
