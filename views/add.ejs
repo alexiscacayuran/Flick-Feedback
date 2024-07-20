@@ -5,33 +5,400 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Flick Feedback</title>
     <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/images/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/images/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/images/site.webmanifest" />
+    <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+    <link
+      href="https://fonts.cdnfonts.com/css/broadsheet-ldo"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.cdnfonts.com/css/sweet-sans-pro"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css"
+      integrity="sha512-34s5cpvaNG3BknEWSuOncX28vz97bRI59UnVtEEpFX536A7BtZSJHsDyFoCl8S7Dt2TPzcrCEoHBGeM4SUBDBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="main.css" />
+
+    <script
+      src="https://kit.fontawesome.com/176c4ea3a9.js"
+      crossorigin="anonymous"
+    ></script>
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
       crossorigin="anonymous"
     ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"
+      integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
   </head>
-  <body>
-    <div class="container">
-      <form action="" method="post">
-        <input
-          type="text"
-          placeholder="Type a movie title"
-          autocomplete="off"
-          autofocus="true"
-        />
-        <button class="btn btn-secondary">Search</button>
+  <body class="movie-add">
+    <div class="container pb-4">
+      <form action="/search" method="post">
+        <div class="d-flex py-4">
+          <div class="movie-add-title me-4">
+            <% if(locals.movie){ %>
+            <input
+              type="text"
+              id="input"
+              name="movieToAdd"
+              autocomplete="off"
+              autofocus="true"
+              required=""
+              value="<%= movie.Title %>"
+            />
+            <label for="input" class="label">Type a movie title</label>
+            <div class="underline"></div>
+            <% } else { %>
+
+            <input
+              type="text"
+              id="input"
+              name="movieToAdd"
+              autocomplete="off"
+              autofocus="true"
+              required=""
+            />
+            <label for="input" class="label">Type a movie title</label>
+            <div class="underline"></div>
+
+            <% } %>
+          </div>
+          <button class="button px-4" type="submit">
+            <span><i class="fa-solid fa-magnifying-glass"></i></span
+            >&nbsp;Search
+          </button>
+        </div>
       </form>
+
+      <div class="movie-add-body d-flex">
+        <div class="movie-add-details col-3 d-flex flex-column">
+          <% if(locals.movie) { %>
+
+          <img class="poster-img" src="<%= movie.Poster %>" />
+          <div class="movie-content-data p-4">
+            <div class="movie-content-details mb-2">
+              <p><%= movie.Year %> &centerdot; <%= movie.Runtime %></p>
+            </div>
+            <div class="movie-content-genres d-flex mb-4">
+              <% movie.Genre.forEach((genre) => { %>
+              <p>
+                <span class="movie-content-genre badge text-bg-primary me-2"
+                  ><%= genre %></span
+                >
+              </p>
+              <% }); %>
+            </div>
+            <div class="movie-content-plot mb-2">
+              <h3 class="plot-title-text mb-1">Synopsis</h3>
+              <p><%= movie.Plot %></p>
+            </div>
+
+            <div class="movie-content-actors mb-4">
+              <p class="movie-content-actors-text"><%= movie.Actors %></p>
+            </div>
+          </div>
+          <% } else { %>
+          <div class="poster-placeholder position-relative">
+            <svg
+              class="placeholder-film position-absolute"
+              version="1.1"
+              viewBox="0 0 1304 1248"
+              width="326"
+              height="312"
+              fill="#444DCF"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                transform="translate(660,209)"
+                d="m0 0 5 1 27 15 17 10 26 15 28 16 104 60 28 16 17 10 28 16 24 14 28 16 104 60 28 16 24 14 17 10 2 4-6 9-6 11-30 52-22 38-14 24-15 26-14 24-30 52-14 24-45 78-8 14-9 12-8 8-14 9-12 5-13 3h-19l-14-3-16-8-25-14-17-10-78-45-28-16-24-14-26-15-28-16-130-75-19-11-11-8-9-9-9-14-5-12-3-15v-13l3-14 5-13 10-18 28-48 16-28 28-48 16-28 28-48 16-28 15-26 14-24 15-26 14-24z"
+              />
+              <path
+                transform="translate(362,788)"
+                d="m0 0h14l15 3 18 8 24 14 78 45 28 16 17 10 28 16 24 14 28 16 104 60 28 16 20 12 10 9 5 5 6 8 7 14 4 16v20l-4 15-8 17-6 10-14 24-30 52-17 29-2 3h-674l2-5 14-25 15-26 28-48 16-28 16-27 14-25 10-17 15-26 10-17 16-28 11-19 14-24 15-26 12-21 14-24 15-26 9-13 3-4h2v-2l13-10 12-6 13-4z"
+              />
+              <path
+                transform="translate(298)"
+                d="m0 0h6v2l25 14 22 13-1 4-11 20-14 24-15 26-14 24-3 7v10l5 8 16 10 28 16 24 14 26 15 19 11 9 1 7-2 7-6 30-52 12-21 11-19 4-7 3-1 17 10 26 15 7 5-2 4-14 25-15 25-6 11-30 52-33 57-14 24-8 14-14 24-16 28-28 48-16 28-28 48-16 28-15 26-12 20-6 11-15 26-14 24-9 15-6 11-15 26-14 24-9 15-6 11-30 52-8 13-6 11-30 52-8 13-6 11-30 52-11 19-14 24-12 21-15 26-11 18-2 1v-216l5 1 21 12 3 2 10 1 8-3 7-8 15-26 16-28 30-52 1-3v-11l-4-8-13-8-26-15-28-16-24-14-21-12v-162h2l2-6 8-13 13-23 28-48 16-28 28-48 16-28 14-24 11-19 14-24 16-28 28-48 16-28 28-48 16-28 28-48 11-19zm-56 232-8 4-6 7-12 21-15 26-14 24-15 26-7 14-1 6 3 8 2 4 10 7 56 32 26 15 21 12 6 2 9-1 8-5 7-10 14-25 14-24 30-52 2-6v-8l-4-8-6-5-24-14-28-16-52-30-10-4zm-128 220-9 5-6 9-30 52-11 19-14 24-6 12-1 9 5 10 14 9 28 16 24 14 26 15 21 12 6 2 9-1 8-5 7-11 30-52 14-24 13-23 3-8-1-9-3-6-9-7-25-14-24-14-28-16-26-15-9-3z"
+              />
+              <path
+                transform="translate(1284,568)"
+                d="m0 0 4 1 16 9v80l-6 9-8 14-9 15-2 5v11l3 6 7 6 15 8v107l-11-6-25-14-24-14-10-4h-7l-9 5-13 22-15 26-28 48-9 16-2 6 1 9 4 7 22 13 26 15 24 14 26 15 16 9 9 1 8-3 5-5 11-17h1v119l-8 13-30 52-14 24-15 26-11 18-3 6h-327l1-4 8-14 28-48 16-28 28-48 16-28 15-26 10-17 14-24 16-28 15-26 10-17 15-26 12-21 10-17 14-24 16-28 14-24 45-78 14-24 30-52 14-24 16-28 10-17zm-183 452-9 4-8 11-13 23-28 48-15 26-4 8-1 3v8l4 8 8 6 52 30 24 14 26 15 9 4h7l7-3 5-4 15-26 14-24 16-28 14-24 6-12 1-8-4-10-8-6-26-15-28-16-24-14-28-16-7-2z"
+              />
+            </svg>
+          </div>
+
+          <% } %>
+        </div>
+
+        <div
+          class="movie-add-content col d-flex flex-column ms-4 justify-content-between align-self-start sticky-top"
+        >
+          <form id="movie-add-form" action="/add" method="post">
+            <% if(locals.movie){ %>
+            <input type="hidden" name="title" value="<%= movie.Title %>" />
+            <% } %>
+            <div class="movie-add-flick-rating d-flex align-items-center mb-4">
+              <label class="content-title" for="flick-rating"
+                >Rate the film/series
+              </label>
+              <div class="flick-rating d-flex">
+                <input
+                  class="btn-check"
+                  type="radio"
+                  name="flickRating"
+                  value="0"
+                  checked
+                  required
+                />
+                <input
+                  id="star1"
+                  class="btn-check"
+                  type="radio"
+                  name="flickRating"
+                  value="1"
+                />
+                <label for="star1" class="star"
+                  ><i class="fa-regular fa-star fa-xl"></i
+                ></label>
+
+                <input
+                  id="star2"
+                  class="btn-check"
+                  type="radio"
+                  name="flickRating"
+                  value="2"
+                />
+                <label for="star2" class="star"
+                  ><i class="fa-regular fa-star fa-xl"></i
+                ></label>
+
+                <input
+                  id="star3"
+                  class="btn-check"
+                  type="radio"
+                  name="flickRating"
+                  value="3"
+                />
+                <label for="star3" class="star"
+                  ><i class="fa-regular fa-star fa-xl"></i
+                ></label>
+
+                <input
+                  id="star4"
+                  class="btn-check"
+                  type="radio"
+                  name="flickRating"
+                  value="4"
+                />
+                <label for="star4" class="star"
+                  ><i class="fa-regular fa-star fa-xl"></i
+                ></label>
+
+                <input
+                  id="star5"
+                  class="btn-check"
+                  type="radio"
+                  name="flickRating"
+                  value="5"
+                />
+                <label for="star5" class="star"
+                  ><i class="fa-regular fa-star fa-xl"></i
+                ></label>
+              </div>
+            </div>
+
+            <div class="movie-add-date-watched d-flex align-items-center mb-4">
+              <label class="content-title" for="date-watched"
+                >When did you watch the film/series?</label
+              >
+              <div class="date-watched">
+                <div
+                  class="input-append date input-group"
+                  id="datepicker"
+                  data-date="01-2024"
+                >
+                  <input
+                    class="form-control"
+                    size="16"
+                    type="text"
+                    name="dateWatched"
+                    value="01-2024"
+                    readonly=""
+                  />
+                  <span class="add-on input-group-text"
+                    ><i class="fa-regular fa-calendar"></i
+                  ></span>
+                </div>
+              </div>
+            </div>
+            <div class="movie-add-recommended d-flex align-items-center mb-4">
+              <label class="content-title" for="recommended"
+                >Will you recommend this?</label
+              >
+              <div class="recommended polar">
+                <label class="radio">
+                  <input
+                    class="yes"
+                    type="radio"
+                    name="recommended"
+                    value="true"
+                    required
+                  />
+                  <span class="name d"
+                    ><i class="fa-solid fa-thumbs-up fa-2xl"></i
+                  ></span>
+                </label>
+                <label class="radio">
+                  <input
+                    class="no"
+                    type="radio"
+                    name="recommended"
+                    value="false"
+                  />
+                  <span class="name"
+                    ><i class="fa-solid fa-thumbs-down fa-2xl"></i
+                  ></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="movie-add-notes mb-4">
+              <label class="content-title mb-2" for="notes-editor"
+                >My Notes</label
+              >
+              <div id="notes-editor"></div>
+            </div>
+
+            <div class="d-flex justify-content-end">
+              <button type="submit" class="button primary">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
     </div>
   </body>
-  <script
-    src="https://code.jquery.com/jquery-3.7.1.min.js"
-    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-    crossorigin="anonymous"
-  ></script>
+
+  <script>
+    $(document).ready(function () {
+      $(".flick-rating i").on("click", () => {
+        var index = $(event.currentTarget).index("i");
+
+        $(".flick-rating input").removeAttr("checked");
+
+        var input = $(event.currentTarget).parent().prev().get(0);
+        input.setAttribute("checked", "checked");
+
+        $(".flick-rating i")
+          .slice(0, index)
+          .addClass("fa-solid")
+          .removeClass("fa-regular");
+        $(".flick-rating i")
+          .slice(index, 5)
+          .addClass("fa-regular")
+          .removeClass("fa-solid");
+      });
+
+      $(".flick-rating i").hover(
+        () => {
+          var inputCheckedIndex =
+            $(".flick-rating input[checked]").index("input") - 1;
+          var index = $(event.currentTarget).index("i");
+
+          console.log("Checked input index: " + inputCheckedIndex);
+          console.log("Current index: " + index);
+
+          $(".flick-rating i")
+            .slice(inputCheckedIndex, index)
+            .addClass("fa-solid")
+            .removeClass("fa-regular");
+        },
+        () => {
+          var inputCheckedIndex =
+            $(".flick-rating input[checked]").index("input") - 1;
+          var index = $(event.currentTarget).index("i");
+
+          $(".flick-rating i")
+            .slice(inputCheckedIndex, index)
+            .addClass("fa-regular")
+            .removeClass("fa-solid");
+        }
+      );
+
+      $("#datepicker").datepicker({
+        format: "mm-yyyy",
+        viewMode: "months",
+        minViewMode: "months",
+      });
+
+      const quill = new Quill("#notes-editor", {
+        modules: {
+          toolbar: [
+            ["bold", "italic", "underline"],
+            ["link", "blockquote", "code-block"],
+            [{ list: "ordered" }, { list: "bullet" }],
+          ],
+        },
+        theme: "snow",
+      });
+
+      //console.log(quill.getContents().ops);
+
+      const form = document.querySelector("#movie-add-form");
+      form.addEventListener("formdata", (event) => {
+        // Append Quill content before submitting
+        event.formData.append("notes", JSON.stringify(quill.getContents().ops));
+      });
+    });
+  </script>
 </html>

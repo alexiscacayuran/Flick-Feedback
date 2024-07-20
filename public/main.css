@@ -1,10 +1,21 @@
 :root {
   --black: #3d3b40;
+  --lighter-black: #8d8895;
+  --darker-black: #252525;
   --indigo: #525ceb;
+  --darker-indigo: #4a53ce;
   --pale-indigo: #bfcfe7;
   --pale-lavender: #f8edff;
+  --grey: #ddd;
+  --darker-grey: #c5c5c5;
   --white: #ffffff;
   --yellow: #ffc947;
+  --green: #36ae7c;
+  --red: #eb5353;
+}
+
+.html {
+  scroll-behavior: smooth;
 }
 
 h1,
@@ -34,12 +45,70 @@ p {
 }
 
 .title-container {
-  height: 550px;
+  height: 610px;
+}
+
+.title-content {
+  margin-left: 150px;
+}
+
+.title-logo {
+  top: -110px;
+  left: -100px;
 }
 
 .title {
   color: var(--pale-lavender);
   font-size: 7em;
+}
+
+@keyframes grow {
+  0% {
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+  }
+  100% {
+    -webkit-transform: scale(1.01, 1.01);
+    transform: scale(1.01, 1.01);
+  }
+}
+
+@keyframes shrink {
+  0% {
+    -webkit-transform: scale(1.01, 1.01);
+    transform: scale(1.01, 1.01);
+  }
+
+  100% {
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+  }
+}
+
+.animate__grow {
+  outline: 2px solid var(--pale-lavender);
+  outline-offset: 4px;
+  animation: grow;
+  -webkit-animation-name: grow;
+  animation-fill-mode: forwards;
+  animation-duration: 1s;
+}
+
+.animate__shrink {
+  animation: shrink;
+  -webkit-animation-name: shrink;
+  animation-fill-mode: forwards;
+  animation-duration: 2s;
+}
+
+.title-arrow {
+  cursor: pointer;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 35px 17.5px 0 17.5px;
+  border-color: #525ceb transparent transparent transparent;
+  bottom: 10px;
 }
 
 .movie-list {
@@ -54,46 +123,69 @@ p {
   width: 85%;
   background-color: var(--black);
   color: var(--white);
+  cursor: pointer;
+}
+
+.poster {
+  background-color: var(--darker-black);
+  width: 27.333333% !important;
+}
+
+.movie-card-poster-img {
+  height: 100%;
+  width: 300px;
+  object-fit: cover;
 }
 
 .poster-img {
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .movie-content-title {
   color: var(--pale-lavender);
 }
 
-.movie-content-imdb p {
+.movie-content-imdb p,
+.movie-imdb p {
   font-family: "Anton", sans-serif;
   color: var(--black);
 }
 
-.movie-content-imdb p:nth-child(1) {
+.movie-content-imdb p:nth-child(1),
+.movie-imdb p:nth-child(1) {
   background-color: var(--yellow);
+  width: 40px;
 }
 
-.movie-content-imdb p:nth-child(2) {
+.movie-content-imdb p:nth-child(2),
+.movie-imdb p:nth-child(2) {
   background-color: var(--white);
   color: var(--black);
+  width: 40px;
 }
 
-.movie-content-genre {
+.movie-content-details,
+.movie-details {
+  color: var(--lighter-black);
+}
+
+.movie-content-genre,
+.movie-genre {
   background-color: var(--indigo) !important;
   color: var(--white) !important;
 }
 
 .plot-title-text {
-  font-size: 1.4em;
+  font-size: 0.8em;
   font-weight: bold;
 }
 
 .movie-content-actors {
-  color: var(--indigo);
+  color: var(--lighter-black);
 }
 
-.movie-content-notes-text {
-  font-family: "Broadsheet LDO", sans-serif;
+.movie-content-notes span {
+  color: var(--pale-lavender);
 }
 
 .movie-content-footer {
@@ -107,4 +199,431 @@ p {
 
 .star {
   color: var(--yellow);
+}
+
+.movie-add {
+  background-color: var(--black);
+  color: var(--white);
+  font-family: "Sweet Sans Pro", sans-serif;
+}
+
+.movie-add-title {
+  position: relative;
+  width: 400px;
+  max-width: 700px;
+}
+
+.movie-add-title input[type="text"] {
+  color: var(--pale-lavender);
+  font-size: 2em;
+  width: 100%;
+  border: none;
+  border-bottom: 2px solid var(--white);
+  background-color: transparent;
+  outline: none;
+}
+
+.movie-add-title .label {
+  font-size: 1em;
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: var(--pale-lavender);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.movie-add-title input[type="text"]:focus ~ .label,
+.movie-add-title input[type="text"]:valid ~ .label {
+  top: -20px;
+  font-size: 0.8em;
+  color: var(--indigo);
+}
+
+.movie-add-title .underline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  background-color: var(--indigo);
+  transform: scaleX(0);
+  transition: all 0.3s ease;
+}
+
+.movie-add-title input[type="text"]:focus ~ .underline,
+.movie-add-title input[type="text"]:valid ~ .underline {
+  transform: scaleX(1);
+}
+
+.movie-add-title input {
+  width: auto;
+}
+
+.movie-add-content {
+  top: 20px;
+}
+
+.datepicker table tr td span.active.active,
+.datepicker table tr td span.active:hover.active {
+  background-color: var(--indigo);
+  background-image: none;
+}
+
+.button {
+  cursor: pointer;
+  position: relative;
+  padding: 10px 24px;
+  font-size: 18px;
+  color: var(--indigo);
+  border: 2px solid var(--indigo);
+  border-radius: 34px;
+  background-color: transparent;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  overflow: hidden;
+}
+
+.primary {
+  width: 160px;
+  background-color: var(--indigo);
+  color: var(--white);
+}
+
+.button:hover::before {
+  scale: 3;
+}
+
+.button:hover {
+  scale: 1.05;
+}
+
+.button:active {
+  scale: 1;
+}
+
+.movie-content-data,
+.data-placeholder {
+  background-color: var(--darker-black);
+}
+
+.poster-placeholder {
+  width: 326px;
+  height: 550px;
+  background-color: var(--indigo);
+}
+
+.placeholder-film {
+  bottom: -1.9px;
+}
+
+.content-title {
+  font-weight: bold;
+  margin-right: 30px;
+}
+
+.flick-rating,
+.flick-rating i {
+  transition: all 0.15s ease-in-out;
+  cursor: pointer;
+}
+
+.input-group {
+  height: 50px;
+}
+
+.polar {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  border-radius: 0.5rem;
+  background-color: var(--white);
+  box-sizing: border-box;
+  box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.06);
+  padding: 0.25rem;
+  width: 120px;
+  font-size: 14px;
+  height: 50px;
+}
+
+.polar .radio {
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+.polar .radio input {
+  display: none;
+}
+
+.polar .radio .name i {
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  border: none;
+  padding: 0.5rem 0.4em;
+  height: 42px;
+  color: var(--black);
+  transition: all 0.15s ease-in-out;
+}
+
+.polar .radio input:checked + .name i {
+  font-weight: bold;
+  height: 42px;
+}
+
+.polar .radio input.yes:checked + .name i {
+  color: var(--white);
+  background-color: var(--green);
+}
+
+.polar .radio input.no:checked + .name i {
+  color: var(--white);
+  background-color: var(--red);
+}
+
+#notes-editor {
+  min-height: 220px;
+  color: var(--white);
+  font-size: 1em;
+}
+
+.ql-editor {
+  overflow-y: visible !important;
+}
+
+.ql-snow .ql-stroke {
+  stroke: var(--indigo);
+}
+
+.ql-snow .ql-fill {
+  fill: var(--indigo);
+}
+
+.ql-snow.ql-toolbar button.ql-active .ql-stroke,
+.ql-snow.ql-toolbar button:hover .ql-stroke {
+  stroke: var(--white);
+}
+
+.ql-snow.ql-toolbar button.ql-active .ql-fill,
+.ql-snow.ql-toolbar button:hover .ql-fill {
+  stroke: var(--white);
+}
+
+.ql-toolbar.ql-snow,
+.ql-container.ql-snow {
+  border: 2px solid var(--indigo);
+}
+
+.movie-show {
+  background-color: var(--indigo);
+}
+
+.movie-title {
+  color: var(--pale-lavender);
+  font-size: 2.3em;
+}
+
+.utilities-button i,
+.home-button i {
+  cursor: pointer;
+  color: var(--pale-indigo);
+  transition: color 1s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.utilities-button:hover i,
+.home-button:hover i {
+  color: var(--white);
+  scale: 1.05;
+}
+
+.utilities-button:active i,
+.home-button:active i {
+  scale: 1;
+}
+
+.modal-dialog {
+  width: 400px;
+  height: fit-content;
+  background: rgb(255, 255, 255);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 30px;
+  position: relative;
+  box-shadow: 20px 20px 30px rgba(0, 0, 0, 0.068);
+}
+
+.modal-content {
+  border: 0;
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 0px 15px;
+}
+
+.modal-header {
+  border: 0;
+  background-color: transparent;
+  font-family: "Sweet Sans Pro", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: rgb(27, 27, 27);
+  padding: 0;
+}
+
+.modal-description {
+  font-weight: 100;
+  color: rgb(102, 102, 102);
+}
+
+.modal-button-wrapper {
+  border: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.modal-button {
+  width: 50%;
+  height: 35px;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.primary {
+  background-color: var(--indigo);
+  color: white;
+}
+.primary:hover {
+  background-color: var(--darker-indigo);
+}
+.secondary {
+  background-color: var(--grey);
+}
+.secondary:hover {
+  background-color: var(--darker-grey);
+}
+
+.exit-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background-color: transparent;
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  cursor: pointer;
+}
+.exit-button:hover svg {
+  fill: black;
+}
+.exit-button svg {
+  fill: rgb(175, 175, 175);
+}
+
+.movie-data {
+  background-color: var(--black);
+}
+
+.movie-plot p,
+.movie-plot h3 {
+  color: var(--white);
+}
+
+.movie-utilities span {
+  color: white;
+}
+
+.movie-body-details {
+  background-color: var(--black);
+  color: var(--white);
+  border-radius: 50px;
+  margin-bottom: 3em;
+}
+
+.movie-stars span {
+  font-size: 1.4em;
+}
+
+.title-text {
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+.movie-body-watched-text,
+.movie-body-recommended-text,
+.movie-body-recommended-icon {
+  font-size: 1.6em;
+}
+
+.movie-notes {
+  color: var(--white);
+  margin-left: 3em;
+  margin-right: 3em;
+}
+
+.movie-notes-title {
+  color: var(--pale-lavender);
+  font-weight: bold;
+  font-family: "Broadsheet LDO", sans-serif;
+  font-size: 1.8em;
+}
+
+.movie-notes-text,
+.movie-notes-text p {
+  font-family: "Sweet Sans Pro", sans-serif;
+  font-size: 1.1em;
+}
+
+.movie-notes-text a {
+  color: var(--pale-indigo);
+}
+
+.movie-edit {
+  background-color: var(--black);
+}
+
+.movie-edit-data {
+  background-color: var(--darker-black);
+}
+
+.edit-title {
+  font-size: 0.9em;
+  color: var(--lighter-black);
+}
+
+.movie-edit-body-details {
+  background-color: var(--darker-black);
+  color: var(--white);
+  border-radius: 0.5rem;
+  margin-bottom: 3em;
+}
+
+.edit-flick-rating {
+  height: 50px;
+  background-color: var(--white);
+  border-radius: 0.5rem;
+}
+
+.movie-edit-body-notes {
+  background-color: var(--darker-black);
+  border-radius: 0.5rem;
+}
+
+.edit-button {
+  width: 200px;
 }

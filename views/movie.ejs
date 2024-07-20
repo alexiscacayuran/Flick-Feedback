@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Flick Feedback</title>
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="/images/apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="/images/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="/images/favicon-16x16.png"
+    />
+    <link rel="manifest" href="/images/site.webmanifest" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.cdnfonts.com/css/broadsheet-ldo"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.cdnfonts.com/css/sweet-sans-pro"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/css/bootstrap-datepicker.min.css"
+      integrity="sha512-34s5cpvaNG3BknEWSuOncX28vz97bRI59UnVtEEpFX536A7BtZSJHsDyFoCl8S7Dt2TPzcrCEoHBGeM4SUBDBw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="/main.css" />
+
+    <script
+      src="https://kit.fontawesome.com/176c4ea3a9.js"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.1.min.js"
+      integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.10.0/js/bootstrap-datepicker.min.js"
+      integrity="sha512-LsnSViqQyaXpD4mBBdRYeP6sRwJiJveh2ZIbW41EBrNmKxgr/LFZIiWT6yr+nycvhvauz8c2nYMhrP80YhG7Cw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill-delta-to-html@0.12.1/dist/browser/QuillDeltaToHtmlConverter.bundle.min.js"></script>
+  </head>
+  <% if(locals.movie) { %>
+  <body class="movie-show">
+    <div class="container">
+      <div class="d-flex align-items-center py-4">
+        <h2 class="movie-title me-4">
+          <span class="home-button" onclick="window.location.href='/'"
+            ><i class="fa-solid fa-chevron-left fa-xs"></i>&numsp;</span
+          ><%= movie.title %>
+        </h2>
+        <div class="movie-imdb d-flex me-auto">
+          <p class="p-1 text-center">IMDb</p>
+          <p class="p-1 text-center"><%= movie.imdb_rating %></p>
+        </div>
+        <div class="movie-utilities d-flex align-items-center">
+          <span
+            class="utilities-button me-4"
+            onclick="window.location.href='/<%= movie.movie_id%>/edit'"
+            ><i class="fa-solid fa-pen-to-square fa-2xl"></i
+          ></span>
+          <span
+            class="utilities-button"
+            data-bs-toggle="modal"
+            data-bs-target="#delete-modal"
+            ><i class="fa-solid fa-trash fa-2xl"></i
+          ></span>
+          <form
+            id="delete-form"
+            action="/<%= movie.movie_id %>/delete"
+            method="get"
+          ></form>
+          <div
+            class="modal fade"
+            id="delete-modal"
+            tabindex="-1"
+            aria-labelledby="delete-modal-label"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <h3 class="modal-header" id="delete-modal-label">
+                  Delete notes?
+                </h3>
+
+                <p class="modal-body">
+                  Do you want to continue? This process cannot be undone.
+                </p>
+                <div class="modal-button-wrapper">
+                  <button
+                    class="modal-button secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    form="delete-form"
+                    class="modal-button primary"
+                  >
+                    Delete
+                  </button>
+                </div>
+                <button class="exit-button" data-bs-dismiss="modal">
+                  <svg height="20px" viewBox="0 0 384 512">
+                    <path
+                      d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex pb-4">
+        <div class="movie-details col-3 d-flex flex-column">
+          <img class="poster-img" src="<%= movie.poster %>" />
+          <div class="movie-data movie-data p-4">
+            <div class="movie-details mb-2">
+              <p><%= movie.year %> &centerdot; <%= movie.runtime %></p>
+            </div>
+            <div class="movie-genres d-flex mb-4">
+              <% movie.genre.forEach((genre) => { %>
+              <p>
+                <span class="movie-genre badge text-bg-primary me-2"
+                  ><%= genre %></span
+                >
+              </p>
+              <% }); %>
+            </div>
+            <div class="movie-plot mb-2">
+              <h3 class="plot-title-text mb-1">Synopsis</h3>
+              <p><%= movie.plot %></p>
+            </div>
+
+            <div class="movie-actors mb-4">
+              <p class="movie-actors-text"><%= movie.actors %></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="movie-body col flex-grow-1 ms-4">
+          <div class="movie-body-details d-flex justify-content-around py-4">
+            <div
+              class="movie-body-ratings d-flex flex-column align-items-center"
+            >
+              <p class="title-text mb-1">FLICK RATING&nbsp;</p>
+              <div
+                class="flick-rating-value"
+                data-rating="<%= movie.flick_rating %>"
+              ></div>
+              <div class="movie-stars">
+                <span class="star"><i class="fa-regular fa-star"></i></span>
+                <span class="star"><i class="fa-regular fa-star"></i></span>
+                <span class="star"><i class="fa-regular fa-star"></i></span>
+                <span class="star"><i class="fa-regular fa-star"></i></span>
+                <span class="star"><i class="fa-regular fa-star"></i></span>
+              </div>
+            </div>
+
+            <div
+              class="movie-body-watched d-flex flex-column align-items-center"
+            >
+              <p class="title-text mb-1">DATE WATCHED</p>
+              <p class="movie-body-watched-text"><%= movie.date_watched %></p>
+            </div>
+
+            <div
+              class="movie-body-recommended d-flex flex-column align-items-center"
+            >
+              <p class="title-text mb-1">WILL RECOMMEND?</p>
+              <div>
+                <%if(movie.recommended){%>
+                <span class="movie-body-recommended-icon" style="color: #36ae7c"
+                  ><i class="fa-solid fa-thumbs-up fa-xl"></i></span
+                ><% } else { %>
+                <span class="movie-body-recommended-icon" style="color: #eb5353"
+                  ><i class="fa-solid fa-thumbs-down fa-xl"></i
+                ></span>
+                <% } %>
+              </div>
+            </div>
+          </div>
+          <div class="movie-notes my-4">
+            <h3 class="movie-notes-title border-bottom pb-2 mb-2">My Notes</h3>
+            <div class="movie-notes-text my-4"><%- movie.notes %></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <% } else { %>
+  <body class="movie-edit">
+    <div class="container">
+      <div class="d-flex align-items-center py-4">
+        <h2 class="movie-title">
+          <span><i class="fa-solid fa-pen-to-square fa-xs">&numsp;</i></span
+          ><%= movieToEdit.title %>
+        </h2>
+      </div>
+      <div class="d-flex pb-4">
+        <div class="movie-details col-3 d-flex flex-column">
+          <img class="poster-img" src="<%= movieToEdit.poster %>" />
+          <div class="movie-edit-data p-4">
+            <div class="movie-details d-flex mb-4">
+              <p class="me-auto">
+                <%= movieToEdit.year %> &centerdot; <%= movieToEdit.runtime %>
+              </p>
+              <div class="movie-imdb d-flex">
+                <p class="p-1 text-center">IMDb</p>
+                <p class="p-1 text-center"><%= movieToEdit.imdb_rating %></p>
+              </div>
+            </div>
+            <div class="movie-genres d-flex mb-4">
+              <% movieToEdit.genre.forEach((genre) => { %>
+              <p>
+                <span class="movie-genre badge text-bg-primary me-2"
+                  ><%= genre %></span
+                >
+              </p>
+              <% }); %>
+            </div>
+            <div class="movie-plot mb-2">
+              <h3 class="plot-title-text mb-1">Synopsis</h3>
+              <p><%= movieToEdit.plot %></p>
+            </div>
+
+            <div class="movie-actors mb-4">
+              <p class="movie-actors-text"><%= movieToEdit.actors %></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="movie-body col flex-grow-1 ms-4">
+          <form id="movie-edit-form" action="/edit" method="post">
+            <input type="hidden" name="id" value="<%= movieToEdit.id %>" />
+            <div class="movie-edit-body-details py-4 mb-4">
+              <h3 class="edit-title ms-4 mb-4">
+                You may edit the content using the fields below.
+              </h3>
+              <div class="d-flex justify-content-around">
+                <div
+                  class="movie-body-ratings d-flex flex-column align-items-center"
+                >
+                  <p class="title-text mb-1">FLICK RATING&nbsp;</p>
+                  <div
+                    class="edit-flick-rating-value"
+                    data-rating="<%= movieToEdit.flick_rating %>"
+                  ></div>
+                  <div
+                    class="edit-flick-rating flick-rating d-flex align-items-center p-4"
+                  >
+                    <input
+                      class="btn-check"
+                      type="radio"
+                      name="flickRating"
+                      value="0"
+                      checked
+                      required
+                    />
+                    <input
+                      id="star1"
+                      class="btn-check"
+                      type="radio"
+                      name="flickRating"
+                      value="1"
+                    />
+                    <label for="star1" class="star"
+                      ><i class="fa-regular fa-star fa-xl"></i
+                    ></label>
+
+                    <input
+                      id="star2"
+                      class="btn-check"
+                      type="radio"
+                      name="flickRating"
+                      value="2"
+                    />
+                    <label for="star2" class="star"
+                      ><i class="fa-regular fa-star fa-xl"></i
+                    ></label>
+
+                    <input
+                      id="star3"
+                      class="btn-check"
+                      type="radio"
+                      name="flickRating"
+                      value="3"
+                    />
+                    <label for="star3" class="star"
+                      ><i class="fa-regular fa-star fa-xl"></i
+                    ></label>
+
+                    <input
+                      id="star4"
+                      class="btn-check"
+                      type="radio"
+                      name="flickRating"
+                      value="4"
+                    />
+                    <label for="star4" class="star"
+                      ><i class="fa-regular fa-star fa-xl"></i
+                    ></label>
+
+                    <input
+                      id="star5"
+                      class="btn-check"
+                      type="radio"
+                      name="flickRating"
+                      value="5"
+                    />
+                    <label for="star5" class="star"
+                      ><i class="fa-regular fa-star fa-xl"></i
+                    ></label>
+                  </div>
+                </div>
+
+                <div
+                  class="movie-body-watched d-flex flex-column align-items-center"
+                >
+                  <p class="title-text mb-1">DATE WATCHED</p>
+                  <div class="date-watched">
+                    <div
+                      class="input-append date input-group"
+                      id="datepicker"
+                      data-date="<%= movieToEdit.date_watched %>"
+                    >
+                      <input
+                        class="form-control"
+                        size="16"
+                        type="text"
+                        name="dateWatched"
+                        value="<%= movieToEdit.date_watched %>"
+                        readonly=""
+                      />
+                      <span class="add-on input-group-text"
+                        ><i class="fa-regular fa-calendar"></i
+                      ></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  class="movie-body-recommended d-flex flex-column align-items-center"
+                >
+                  <div
+                    class="edit-recommended-value"
+                    data-recommended="<%= movieToEdit.recommended %>"
+                  ></div>
+                  <p class="title-text mb-1">WILL RECOMMEND?</p>
+                  <div class="recommended polar">
+                    <label class="radio">
+                      <input
+                        class="yes"
+                        type="radio"
+                        name="recommended"
+                        value="true"
+                        required
+                      />
+                      <span class="name"
+                        ><i class="fa-solid fa-thumbs-up fa-2xl"></i
+                      ></span>
+                    </label>
+                    <label class="radio">
+                      <input
+                        class="no"
+                        type="radio"
+                        name="recommended"
+                        value="false"
+                      />
+                      <span class="name"
+                        ><i class="fa-solid fa-thumbs-down fa-2xl"></i
+                      ></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="movie-edit-body-notes p-4 mb-4">
+              <div
+                class="edit-notes-value"
+                data-notes="<%= movieToEdit.notes %>"
+              ></div>
+              <label class="mb-4" for="notes-editor"
+                ><h3 class="edit-title">
+                  Make changes to your notes using the text editor below.
+                </h3></label
+              >
+              <div id="notes-editor"></div>
+            </div>
+
+            <div class="d-flex justify-content-end">
+              <button type="submit" class="edit-button button primary">
+                Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+  <% } %>
+  <script>
+    $(document).ready(function () {
+      if ($(".flick-rating-value").length) {
+        var rating = $(".flick-rating-value").data("rating");
+      }
+
+      $(".movie-stars")
+        .find("i")
+        .slice(0, rating)
+        .addClass("fa-solid")
+        .removeClass("fa-regular");
+
+      if ($(".edit-flick-rating-value").length) {
+        var rating = $(".edit-flick-rating-value").data("rating");
+      }
+
+      $(".edit-flick-rating input").removeAttr("checked");
+      $(".edit-flick-rating input[value=" + rating + "]")
+        .get(0)
+        .setAttribute("checked", "checked");
+      $(".edit-flick-rating i")
+        .slice(0, rating)
+        .addClass("fa-solid")
+        .removeClass("fa-regular");
+
+      if ($(".edit-recommended-value").length) {
+        var recommended = $(".edit-recommended-value").data("recommended");
+      }
+
+      if (recommended) {
+        $(".recommended input").removeAttr("checked");
+        $(".recommended input.yes").get(0).setAttribute("checked", "checked");
+      } else {
+        $(".recommended input").removeAttr("checked");
+        $(".recommended input.no").get(0).setAttribute("checked", "checked");
+      }
+
+      $(".edit-flick-rating i").on("click", () => {
+        var index = $(event.currentTarget).index("i");
+        //console.log(index);
+
+        $(".edit-flick-rating input").removeAttr("checked");
+
+        var input = $(event.currentTarget).parent().prev().get(0);
+
+        input.setAttribute("checked", "checked");
+
+        $(".edit-flick-rating i")
+          .slice(0, index)
+          .addClass("fa-solid")
+          .removeClass("fa-regular");
+        $(".edit-flick-rating i")
+          .slice(index, 5)
+          .addClass("fa-regular")
+          .removeClass("fa-solid");
+      });
+
+      $(".edit-flick-rating i").hover(
+        () => {
+          var inputCheckedIndex = $(".edit-flick-rating input[checked]").index(
+            "input"
+          );
+          var index = $(event.currentTarget).index("i");
+
+          // console.log("Checked input index: " + inputCheckedIndex);
+          // console.log("Current index: " + index);
+
+          $(".edit-flick-rating i")
+            .slice(inputCheckedIndex, index)
+            .addClass("fa-solid")
+            .removeClass("fa-regular");
+        },
+        () => {
+          var inputCheckedIndex = $(".edit-flick-rating input[checked]").index(
+            "input"
+          );
+          var index = $(event.currentTarget).index("i");
+
+          $(".edit-flick-rating i")
+            .slice(inputCheckedIndex, index)
+            .addClass("fa-regular")
+            .removeClass("fa-solid");
+        }
+      );
+
+      $("#datepicker").datepicker({
+        format: "mm-yyyy",
+        viewMode: "months",
+        minViewMode: "months",
+      });
+
+      const quill = new Quill("#notes-editor", {
+        modules: {
+          toolbar: [
+            ["bold", "italic", "underline"],
+            ["link", "blockquote", "code-block"],
+            [{ list: "ordered" }, { list: "bullet" }],
+          ],
+        },
+        theme: "snow",
+      });
+
+      if ($(".edit-notes-value").length) {
+        var notes = $(".edit-notes-value").data("notes");
+      }
+
+      quill.setContents(notes);
+
+      //console.log(quill.getContents().ops);
+
+      const form = document.querySelector("#movie-edit-form");
+      form.addEventListener("formdata", (event) => {
+        // Append Quill content before submitting
+        event.formData.append("notes", JSON.stringify(quill.getContents().ops));
+      });
+    });
+  </script>
+</html>
